@@ -1,62 +1,58 @@
 package th.ac.kku.cis.lab.androidroom
 
-import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import androidx.navigation.fragment.findNavController
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import th.ac.kku.cis.lab.androidroom.repository.StudentRepository
-import th.ac.kku.cis.lab.androidroom.databinding.ActivityMainBinding
+import th.ac.kku.cis.lab.androidroom.repository.model.Student
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
-    //lateinit var adapter: UserListAdapter
-    val repo:StudentRepository by lazy {
+    lateinit var adapter: StudentListAdapter
+    val repo: StudentRepository by lazy {
         StudentRepository(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        adapter = StudentListAdapter()
+        var recyclerview_student:RecyclerView = findViewById(R.id.recyclerview_student)
+        recyclerview_student.layoutManager = LinearLayoutManager(this)
+        recyclerview_student.adapter = adapter
 
 
-    }
+        adapter.setOnItemClick(object : ListClickListener<Student>{
+            override fun onClick(data: Student, position: Int) {
+                Log.d("LAB", "item click")
+                val intent = Intent(this@MainActivity,NewStudentActivity::class.java)
+                intent.putExtra("student", data)
+                startActivity(intent)
+            }
+        })
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+
+        var btnNewStudent:Button = findViewById(R.id.btnNew)
+        btnNewStudent.setOnClickListener{
+            val intent = Intent(this,NewStudentActivity::class.java)
+            startActivity(intent)
         }
+
+        fetchUsers()
+    }
+    override fun onResume() {
+        super.onResume()
+        fetchUsers()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    fun fetchUsers() {
+        val allUsers = repo.getAllStudents()
+        adapter.setUsers(allUsers)
     }
 }

@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/activity_new_student.xml" value="0.23125" />
         <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/content_main.xml" value="0.3625" />
+        <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/content_new_student.xml" value="0.23125" />
         <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/fragment_first.xml" value="0.3625" />
         <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/fragment_second.xml" value="0.3625" />
+        <entry key="..\:/Users/tanap/StudioProjects/AndroidRoom/app/src/main/res/layout/student_list.xml" value="0.23020833333333332" />
       </map>
     </option>
   </component>

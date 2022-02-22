@@ -1,12 +1,10 @@
 package th.ac.kku.cis.lab.androidroom.repository.database
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 import th.ac.kku.cis.lab.androidroom.repository.model.Student
 
+@Dao
 interface StudentDAO {
     @Insert
     fun insertStudent(student: Student)
