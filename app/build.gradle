@@ -50,9 +50,18 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
-    var room_version = "2.4.1"
     // Room components
+    var room_version = "2.4.1"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
+    // Lifecycle components
+    var lifecycleVersion = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+    // Kotlin components
+    var coroutines = "1.6.0"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 }

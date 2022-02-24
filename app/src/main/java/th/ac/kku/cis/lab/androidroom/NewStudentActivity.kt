@@ -1,12 +1,13 @@
 package th.ac.kku.cis.lab.androidroom
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import th.ac.kku.cis.lab.androidroom.repository.StudentRepository
-import th.ac.kku.cis.lab.androidroom.repository.model.Student
+import th.ac.kku.cis.lab.androidroom.repository.entity.Student
 
 class NewStudentActivity : AppCompatActivity() {
     var student: Student? = null
@@ -29,32 +30,34 @@ class NewStudentActivity : AppCompatActivity() {
 
         }
 
-        val repo = StudentRepository(this)
+        //val repo = StudentRepository(this)
 
         val btnSave:Button = findViewById(R.id.btnSave)
         btnSave.setOnClickListener {
             if (etStudentID.text.isNotEmpty() && etStudentName.text.isNotEmpty() && etStudentEmail.text.isNotEmpty()) {
-
+                val replyIntent = Intent()
                 student?.let {
                     val editedStudent = Student(it.id,
                         etStudentID.text.toString(),
                         etStudentName.text.toString(),
                         etStudentEmail.text.toString()
                     )
-                    repo.updateStudent(editedStudent)
+                    //repo.updateStudent(editedStudent)
                 } ?: kotlin.run {
-                    val user = Student(null,
+                    val student = Student(null,
                         etStudentID.text.toString(),
                         etStudentName.text.toString(),
                         etStudentEmail.text.toString()
                     )
-                    repo.insertStudent(user)
+                    ///repo.insertStudent(user)
+                    replyIntent.putExtra("NEW_STUDENT", student)
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
                 }
 
             } else {
                 Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show()
             }
-            finish()
         }
     }
 }

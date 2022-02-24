@@ -1,4 +1,4 @@
-package th.ac.kku.cis.lab.androidroom.repository.model
+package th.ac.kku.cis.lab.androidroom.repository.entity
 
 import android.os.Parcel
 import android.os.Parcelable

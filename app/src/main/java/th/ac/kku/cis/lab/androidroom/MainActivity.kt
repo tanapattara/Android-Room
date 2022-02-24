@@ -1,31 +1,32 @@
 package th.ac.kku.cis.lab.androidroom
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import th.ac.kku.cis.lab.androidroom.repository.StudentRepository
-import th.ac.kku.cis.lab.androidroom.repository.model.Student
+import th.ac.kku.cis.lab.androidroom.repository.entity.Student
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var adapter: StudentListAdapter
-    val repo: StudentRepository by lazy {
-        StudentRepository(this)
+    private val newStudentActivityRequestCode = 1
+    private val studentViewModel: StudentViewModel by viewModels {
+        StudentViewModelFactory((application as StudentApplication).repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adapter = StudentListAdapter()
-        var recyclerview_student:RecyclerView = findViewById(R.id.recyclerview_student)
-        recyclerview_student.layoutManager = LinearLayoutManager(this)
-        recyclerview_student.adapter = adapter
-
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_student)
+        val adapter = StudentListAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         adapter.setOnItemClick(object : ListClickListener<Student>{
             override fun onClick(data: Student, position: Int) {
@@ -36,23 +37,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
-
         var btnNewStudent:Button = findViewById(R.id.btnNew)
         btnNewStudent.setOnClickListener{
             val intent = Intent(this,NewStudentActivity::class.java)
-            startActivity(intent)
+            //startActivityForResult(intent, newStudentActivityRequestCode)
+            val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                if(it.resultCode == Activity.RESULT_OK){
+                    it.data?.getStringExtra("NEW_STUDENT")?.let { reply ->
+                        val student = Student(null,reply[1].toString(),reply[2].toString(),reply[3].toString(),)
+                        studentViewModel.insert(student)
+                    }
+                }
+            }
         }
 
-        fetchUsers()
-    }
-    override fun onResume() {
-        super.onResume()
-        fetchUsers()
-    }
-
-    fun fetchUsers() {
-        val allUsers = repo.getAllStudents()
-        adapter.setUsers(allUsers)
     }
 }

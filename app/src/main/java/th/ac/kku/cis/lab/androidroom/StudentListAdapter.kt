@@ -1,13 +1,11 @@
 package th.ac.kku.cis.lab.androidroom
 
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
-import th.ac.kku.cis.lab.androidroom.repository.model.Student
+import th.ac.kku.cis.lab.androidroom.repository.entity.Student
 
 class StudentListAdapter : RecyclerView.Adapter<MyViewHolder>() {
     var studentList = mutableListOf<Student>()
